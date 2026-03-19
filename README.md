@@ -17,9 +17,69 @@ To interface a 16x2 LCD with an 8051 microcontroller and display your name.
 7.Continuously run the program to keep displaying the message.
 
 ## Program :
-
+```
+#include<reg51.h>
+sbit rs=P1^0;
+sbit rw=P1^1;
+sbit en=P1^2;
+void lcdcmd (unsigned char);
+void lcddat (unsigned char);
+void delay();
+void main()
+{
+P2=0x00; 
+while (1)
+{
+lcdcmd(0x38); // 5X7 matrix crystal
+delay();
+lcdcmd(0x01); 
+delay();
+lcdcmd(0x10); //cursor blinking
+delay();
+lcdcmd(0x0c); //display on
+delay();
+lcdcmd(0x81);
+delay();
+lcddat ('E');
+delay();
+lcddat ('M');
+delay();
+lcddat ('B'); //I
+delay();
+lcddat('S');
+delay();
+lcddat('Y');
+delay();
+lcddat('S');
+delay();
+}
+}
+void lcdcmd (unsigned char val)
+{
+P2=val;
+rs=0;
+rw=0;
+en=1;
+delay();
+en=0;
+}
+void lcddat (unsigned char val)
+{
+P2=val;
+rs=1;
+rw=0;
+en=1;
+delay();
+en=0;
+}
+void delay()
+{
+unsigned int i;
+for (i=0;i<12000; i++);
+}
+```
 ## Output :
-
+<img width="1813" height="965" alt="image" src="https://github.com/user-attachments/assets/3d6a3ab4-86e8-44d7-91b6-1a75df6d0b60" />
 
 ## Result :  
 Thus interfacing LCD using 8051 microcontroller is executed successfully.
